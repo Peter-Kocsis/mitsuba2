@@ -5,6 +5,7 @@
 /// Trampoline for derived types implemented in Python
 MTS_VARIANT class PyEmitter : public Emitter<Float, Spectrum> {
 public:
+    MTS_IMPORT_BASE(Emitter, m_flags, m_shape, m_medium)
     MTS_IMPORT_TYPES(Emitter)
 
     PyEmitter(const Properties &props) : Emitter(props) { }
@@ -52,7 +53,8 @@ MTS_PY_EXPORT(Emitter) {
     auto emitter = py::class_<Emitter, PyEmitter, Endpoint, ref<Emitter>>(m, "Emitter", D(Emitter))
         .def(py::init<const Properties&>())
         .def_method(Emitter, is_environment)
-        .def_method(Emitter, flags);
+        .def_method(Emitter, flags)
+        .def_readwrite("m_shape", &PyEmitter::m_shape);
 
     if constexpr (is_cuda_array_v<Float>)
         pybind11_type_alias<UInt64, EmitterPtr>();
