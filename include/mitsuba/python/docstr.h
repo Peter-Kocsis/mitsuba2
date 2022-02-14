@@ -5158,6 +5158,10 @@ static const char *__doc_mitsuba_Scene_bbox = R"doc(Return a bounding box surrou
 
 static const char *__doc_mitsuba_Scene_class = R"doc()doc";
 
+static const char *__doc_mitsuba_Scene_addEmitter = R"doc(Adds emitter)doc";
+
+static const char *__doc_mitsuba_Scene_popEmitter = R"doc(Pops last emitter)doc";
+
 static const char *__doc_mitsuba_Scene_emitters = R"doc(Return the list of emitters)doc";
 
 static const char *__doc_mitsuba_Scene_emitters_2 = R"doc(Return the list of emitters (const version))doc";

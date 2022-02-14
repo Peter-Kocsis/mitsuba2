@@ -64,6 +64,8 @@ MTS_PY_EXPORT(Scene) {
         .def_method(Scene, bbox)
         .def("sensors", py::overload_cast<>(&Scene::sensors), D(Scene, sensors))
         .def("emitters", py::overload_cast<>(&Scene::emitters), D(Scene, emitters))
+        .def_method(Scene, addEmitter)
+        .def_method(Scene, popEmitter)
         .def_method(Scene, environment)
         .def("shapes", [](const Scene &scene) {
             py::list result;
