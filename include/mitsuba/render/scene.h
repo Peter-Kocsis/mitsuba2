@@ -148,10 +148,10 @@ public:
     const host_vector<ref<Emitter>, Float> &emitters() const { return m_emitters; }
 
     /// Adds new emitter to the scene
-    void addEmitter(ref<Emitter> emitter){ m_emitters.push_back(emitter); }
+    void addEmitter(ref<Emitter> emitter){ m_children.push_back(emitter); m_emitters.push_back(emitter); }
 
     /// Pops the last emitter of the scene
-    void popEmitter(){ m_emitters.pop_back(); }
+    void popEmitter(){ m_children.pop_back(); m_emitters.pop_back(); }
 
     /// Return the environment emitter (if any)
     const Emitter *environment() const { return m_environment.get(); }
