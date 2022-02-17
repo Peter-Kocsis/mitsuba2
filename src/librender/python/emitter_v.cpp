@@ -23,7 +23,8 @@ public:
                      const Point2f &sample,
                      Mask active) const override {
         using Return = std::pair<DirectionSample3f, Spectrum>;
-        PYBIND11_OVERLOAD_PURE(Return, Emitter, sample_direction, ref, sample, active);
+        const SurfaceInteraction3f& child_ref = static_cast<const SurfaceInteraction3f&>(ref);
+        PYBIND11_OVERLOAD_PURE(Return, Emitter, sample_direction, child_ref, sample, active);
     }
 
     Float pdf_direction(const Interaction3f &ref,
