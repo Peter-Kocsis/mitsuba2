@@ -161,6 +161,8 @@ public:
     /// Return the list of shapes
     const std::vector<ref<Shape>> &shapes() const { return m_shapes; }
 
+    /// Sets scene's integrator
+    void set_integrator(ref<Integrator> integrator) { m_integrator = integrator; }
     /// Return the scene's integrator
     Integrator* integrator() { return m_integrator; }
     /// Return the scene's integrator

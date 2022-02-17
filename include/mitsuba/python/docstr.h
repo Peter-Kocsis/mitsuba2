@@ -5168,6 +5168,8 @@ static const char *__doc_mitsuba_Scene_emitters_2 = R"doc(Return the list of emi
 
 static const char *__doc_mitsuba_Scene_environment = R"doc(Return the environment emitter (if any))doc";
 
+static const char *__doc_mitsuba_Scene_set_integrator = R"doc(Sets the scene's integrator)doc";
+
 static const char *__doc_mitsuba_Scene_integrator = R"doc(Return the scene's integrator)doc";
 
 static const char *__doc_mitsuba_Scene_integrator_2 = R"doc(Return the scene's integrator)doc";
