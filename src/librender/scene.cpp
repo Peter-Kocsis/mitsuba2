@@ -71,7 +71,9 @@ MTS_VARIANT Scene<Float, Spectrum>::Scene(const Properties &props) {
 
             ScalarFloat distance =
                 hmax(extents) / (2.f * std::tan(45.f * .5f * math::Pi<ScalarFloat> / 180.f));
-
+            if (distance <= 0.0) {
+                distance += 10.0;
+            }
             sensor_props.set_float("far_clip", hmax(extents) * 5 + distance);
             sensor_props.set_float("near_clip", distance / 100);
 

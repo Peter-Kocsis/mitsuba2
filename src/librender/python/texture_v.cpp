@@ -32,11 +32,11 @@ public:
         PYBIND11_OVERLOAD_PURE(Return, Texture, pdf_spectrum, si, active);
     }
 
-    std::pair<Point2f, Float> sample_position(const Point2f &sample,
+    /*std::pair<Point2f, Float> sample_position(const Point2f &sample,
                                               Mask active = true) const override {
         using Return = std::pair<Point2f, Float>;
         PYBIND11_OVERLOAD_PURE(Return, Texture, sample_position, sample, active);
-    }
+    }*/
 
     ScalarFloat mean() const override {
         using Return = ScalarFloat;
@@ -46,6 +46,11 @@ public:
     std::string to_string() const override {
         using Return = std::string;
         PYBIND11_OVERLOAD_PURE(Return, Texture, to_string);
+    }
+
+    bool is_spatially_varying() const override {
+        using Return = bool;
+        PYBIND11_OVERLOAD_PURE(Return, Texture, is_spatially_varying);
     }
 
     /*Float pdf_position(const Point2f &p, Mask active = true) const override {
@@ -64,7 +69,34 @@ MTS_PY_EXPORT(Texture) {
 
     auto texture = py::class_<Texture, PyTexture, ref<Texture>>(m, "Texture", D(Texture))
         .def(py::init<const Properties&>())
-        .def_readwrite("m_id", &PyTexture::m_id);
+        .def_readwrite("m_id", &PyTexture::m_id)
+        .def_static("D65", &Texture::D65, "scale"_a = 1.f)
+        .def("mean", &Texture::mean, D(Texture, mean))
+        .def("is_spatially_varying", &Texture::is_spatially_varying,
+             D(Texture, is_spatially_varying))
+        .def("eval",
+            vectorize(&Texture::eval),
+            "si"_a, "active"_a = true, D(Texture, eval))
+        .def("eval_1",
+            vectorize(&Texture::eval_1),
+            "si"_a, "active"_a = true, D(Texture, eval_1))
+        .def("eval_1_grad",
+            vectorize(&Texture::eval_1_grad),
+            "si"_a, "active"_a = true, D(Texture, eval_1_grad))
+        .def("eval_3",
+            vectorize(&Texture::eval_3),
+            "si"_a, "active"_a = true, D(Texture, eval_3))
+        .def("sample_spectrum",
+            vectorize(&Texture::sample_spectrum),
+            "si"_a, "sample"_a, "active"_a = true, D(Texture, sample_spectrum))
+        .def("pdf_spectrum", &Texture::pdf_spectrum,
+            "si"_a, "active"_a = true, D(Texture, pdf_spectrum))
+        .def("sample_position",
+            vectorize(&Texture::sample_position),
+            "sample"_a, "active"_a = true, D(Texture, sample_position))
+        .def("pdf_position",
+            vectorize(&Texture::pdf_position),
+            "p"_a, "active"_a = true, D(Texture, pdf_position));
 
     MTS_PY_REGISTER_OBJECT("register_texture", Texture)
 
