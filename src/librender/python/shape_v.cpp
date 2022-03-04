@@ -44,6 +44,7 @@ MTS_PY_EXPORT(Shape) {
         .def_method(Shape, exterior_medium)
         .def_method(Shape, is_emitter)
         .def_method(Shape, is_sensor)
+        .def_method(Shape, setEmitter)
         .def("emitter", vectorize(py::overload_cast<Mask>(&Shape::emitter, py::const_)),
                 "active"_a = true)
         .def("sensor", py::overload_cast<>(&Shape::sensor, py::const_))

@@ -359,6 +359,9 @@ public:
     /// Return the area emitter associated with this shape (if any)
     const Emitter *emitter(Mask /* unused */ = false) const { return m_emitter.get(); }
 
+    /// Set emitter
+    void setEmitter(ref<Emitter> emitter){ m_emitter = emitter; }
+
     /// Return the area emitter associated with this shape (if any)
     Emitter *emitter(Mask /* unused */ = false) { return m_emitter.get(); }
 

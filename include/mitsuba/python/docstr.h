@@ -5556,6 +5556,8 @@ static const char *__doc_mitsuba_Shape_emitter = R"doc(Return the area emitter a
 
 static const char *__doc_mitsuba_Shape_emitter_2 = R"doc(Return the area emitter associated with this shape (if any))doc";
 
+static const char *__doc_mitsuba_Shape_setEmitter = R"doc(Set the emitter)doc";
+
 static const char *__doc_mitsuba_Shape_eval_attribute =
 R"doc(Evaluate a specific shape attribute at the given surface interaction.
 
