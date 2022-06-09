@@ -328,6 +328,9 @@ public:
     /// Return a string identifier
     std::string id() const override;
 
+    /// Return a string identifier
+    UInt32 id_hash() const { return UInt32(std::hash<std::string>{}(id())); };
+
     /// Is this shape a triangle mesh?
     bool is_mesh() const { return class_()->derives_from(Mesh<Float, Spectrum>::m_class); }
 
@@ -530,6 +533,8 @@ ENOKI_CALL_SUPPORT_TEMPLATE_BEGIN(mitsuba::Shape)
     ENOKI_CALL_SUPPORT_METHOD(eval_attribute)
     ENOKI_CALL_SUPPORT_METHOD(eval_attribute_1)
     ENOKI_CALL_SUPPORT_METHOD(eval_attribute_3)
+    ENOKI_CALL_SUPPORT_METHOD(id)
+    ENOKI_CALL_SUPPORT_METHOD(id_hash)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(emitter, m_emitter, const typename Class::Emitter *)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(sensor, m_sensor, const typename Class::Sensor *)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(bsdf, m_bsdf, const typename Class::BSDF *)
