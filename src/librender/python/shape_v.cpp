@@ -38,6 +38,7 @@ MTS_PY_EXPORT(Shape) {
             &Shape::bbox, py::const_), D(Shape, bbox, 3), "index"_a, "clip"_a)
         .def_method(Shape, surface_area)
         .def_method(Shape, id)
+        .def_method(Shape, id_hash)
         .def_method(Shape, is_mesh)
         .def_method(Shape, is_medium_transition)
         .def_method(Shape, interior_medium)

@@ -5629,6 +5629,8 @@ static const char *__doc_mitsuba_Shape_get_children_string = R"doc()doc";
 
 static const char *__doc_mitsuba_Shape_id = R"doc(Return a string identifier)doc";
 
+static const char *__doc_mitsuba_Shape_id_hash = R"doc(Return the hash of the string identifier)doc";
+
 static const char *__doc_mitsuba_Shape_interior_medium = R"doc(Return the medium that lies on the interior of this shape)doc";
 
 static const char *__doc_mitsuba_Shape_is_emitter = R"doc(Is this shape also an area emitter?)doc";
