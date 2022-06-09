@@ -329,7 +329,7 @@ public:
     std::string id() const override;
 
     /// Return a string identifier
-    UInt32 id_hash() const { return UInt32(std::hash<std::string>{}(id())); };
+    Int32 id_hash() const { return Int32(std::hash<std::string>{}(id())); };
 
     /// Is this shape a triangle mesh?
     bool is_mesh() const { return class_()->derives_from(Mesh<Float, Spectrum>::m_class); }

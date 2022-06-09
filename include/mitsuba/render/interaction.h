@@ -214,7 +214,7 @@ struct SurfaceInteraction : Interaction<Float_, Spectrum_> {
     BSDFPtr bsdf() const { return shape->bsdf(); }
 
     // Returns the shape ids
-    UInt32 shape_id() const { return shape->id_hash(); }
+    Int32 shape_id() const { return shape->id_hash(); }
 
     /// Computes texture coordinate partials
     void compute_uv_partials(const RayDifferential3f &ray) {
