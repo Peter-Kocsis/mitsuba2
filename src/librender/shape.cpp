@@ -294,8 +294,11 @@ Shape<Float, Spectrum>::sample_direction(const Interaction3f &it,
                                          const Point2f &sample,
                                          Mask active) const {
     MTS_MASK_ARGUMENT(active);
+    
 
+    std::cout << "Sample position" << std::endl;
     DirectionSample3f ds(sample_position(it.time, sample, active));
+    std::cout << "Sample position done!" << std::endl;
     ds.d = ds.p - it.p;
 
     Float dist_squared = squared_norm(ds.d);
