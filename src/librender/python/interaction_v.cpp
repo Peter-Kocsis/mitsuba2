@@ -140,8 +140,8 @@ MTS_PY_EXPORT(SurfaceInteraction) {
             "ray"_a, D(SurfaceInteraction, bsdf))
         .def("bsdf", py::overload_cast<>(&SurfaceInteraction3f::bsdf, py::const_),
             D(SurfaceInteraction, bsdf, 2))
-        .def("shape_id", py::overload_cast<>(&SurfaceInteraction3f::shape_id, py::const_),
-            D(SurfaceInteraction, shape_id))
+        .def("shape_idx", py::overload_cast<>(&SurfaceInteraction3f::shape_idx, py::const_),
+            D(SurfaceInteraction, shape_idx))
         .def("compute_uv_partials", &SurfaceInteraction3f::compute_uv_partials, "ray"_a,
             D(SurfaceInteraction, compute_uv_partials))
         .def("has_uv_partials", &SurfaceInteraction3f::has_uv_partials,

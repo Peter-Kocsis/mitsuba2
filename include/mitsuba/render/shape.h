@@ -325,11 +325,14 @@ public:
     //! @{ \name Miscellaneous
     // =============================================================
 
-    /// Return a string identifier
-    std::string id() const override;
+    /// The shape index in the scene
+    Int32 idx;
+
+    /// The shape index in the scene
+    Int32 get_idx() const { return idx; };
 
     /// Return a string identifier
-    Int32 id_hash() const { return Int32(std::hash<std::string>{}(id())); };
+    std::string id() const override;
 
     /// Is this shape a triangle mesh?
     bool is_mesh() const { return class_()->derives_from(Mesh<Float, Spectrum>::m_class); }
@@ -534,7 +537,7 @@ ENOKI_CALL_SUPPORT_TEMPLATE_BEGIN(mitsuba::Shape)
     ENOKI_CALL_SUPPORT_METHOD(eval_attribute_1)
     ENOKI_CALL_SUPPORT_METHOD(eval_attribute_3)
     ENOKI_CALL_SUPPORT_METHOD(id)
-    ENOKI_CALL_SUPPORT_METHOD(id_hash)
+    ENOKI_CALL_SUPPORT_METHOD(get_idx)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(emitter, m_emitter, const typename Class::Emitter *)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(sensor, m_sensor, const typename Class::Sensor *)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(bsdf, m_bsdf, const typename Class::BSDF *)
