@@ -216,32 +216,6 @@ Scene<Float, Spectrum>::sample_emitter_direction(const Interaction3f &ref, const
     return { ds, spec };
 }
 
-MTS_VARIANT std::pair<typename Scene<Float, Spectrum>::DirectionSample3f, Spectrum>
-Scene<Float, Spectrum>::sample_emitter_object_direction(const Interaction3f &ref, const Int32 object_idx, const Point2f &sample_, Mask active) const {
-    MTS_MASKED_FUNCTION(ProfilerPhase::SampleEmitterDirection, active);
-
-    using ShapePtr = replace_scalar_t<Float, Shape*>;
-
-    Point2f sample(sample_);
-    DirectionSample3f ds;
-    Spectrum spec;
-
-    // Collect the objects
-    UInt32 index = UInt32(object_idx);
-    std::cout << "Index " << index << std::endl;
-    ShapePtr shape_obj = gather<ShapePtr>(m_shapes.data(), index, active);
-    std::cout << "Gather done! " << std::endl;
-
-    // Sample a direction towards the emitter
-    std::cout << "Sampling start with " << shape_obj << std::endl;
-    // std::cout << "Sampling start with " << shape_obj << std::endl;
-    // std::cout << "Sampling start with " << shape_obj << std::endl;
-    // ds = shape_obj->sample_direction(ref, sample, active);
-    // std::cout << "Sampling done! " << std::endl;
-
-    return { ds, spec };
-}
-
 MTS_VARIANT Float
 Scene<Float, Spectrum>::pdf_emitter_direction(const Interaction3f &ref,
                                               const DirectionSample3f &ds,

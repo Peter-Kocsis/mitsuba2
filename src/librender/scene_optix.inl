@@ -423,6 +423,30 @@ Scene<Float, Spectrum>::ray_intersect_preliminary_gpu(const Ray3f &ray_, Mask ac
     }
 }
 
+
+MTS_VARIANT typename std::pair<typename Scene<Float, Spectrum>::DirectionSample3f, Spectrum>
+Scene<Float, Spectrum>::sample_emitter_object_direction(const Interaction3f &ref, const Int32 object_idx, const Point2f &sample_, Mask active) const {
+    if constexpr (is_cuda_array_v<Float>) {
+        Point2f sample(sample_);
+        DirectionSample3f ds;
+        Spectrum spec;
+
+        UInt32 index = UInt32(object_idx);
+        OptixState &s = *(OptixState *) m_accel;
+        ShapePtr shape_obj = gather<ShapePtr>(reinterpret_array<ShapePtr>(s.shapes_ptr), index, active);
+
+        ds = shape_obj->sample_direction(ref, sample, active);
+
+        return { ds, spec };
+    } else {
+        ENOKI_MARK_USED(ref);
+        ENOKI_MARK_USED(object_idx);
+        ENOKI_MARK_USED(active);
+        Throw("sample_emitter_object_direction() should only be called in GPU mode.");
+    }
+}
+
+
 MTS_VARIANT typename Scene<Float, Spectrum>::SurfaceInteraction3f
 Scene<Float, Spectrum>::ray_intersect_gpu(const Ray3f &ray_, HitComputeFlags flags, Mask active) const {
     if constexpr (is_cuda_array_v<Float>) {

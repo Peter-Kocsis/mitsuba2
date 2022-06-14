@@ -216,6 +216,9 @@ struct SurfaceInteraction : Interaction<Float_, Spectrum_> {
     // Returns the shape ids
     Int32 shape_idx() const { return shape->get_idx(); }
 
+    // Returns the pdf of the positions
+    Float pdf_position(Mask active) const { return shape->pdf_position(PositionSample3f(*this), active); }
+
     /// Computes texture coordinate partials
     void compute_uv_partials(const RayDifferential3f &ray) {
         if (!ray.has_differentials)

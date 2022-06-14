@@ -6399,6 +6399,8 @@ static const char *__doc_mitsuba_SurfaceInteraction_bsdf_2 = R"doc()doc";
 
 static const char *__doc_mitsuba_SurfaceInteraction_shape_idx = R"doc()doc";
 
+static const char *__doc_mitsuba_SurfaceInteraction_pdf_position = R"doc()doc";
+
 static const char *__doc_mitsuba_SurfaceInteraction_compute_uv_partials = R"doc(Computes texture coordinate partials)doc";
 
 static const char *__doc_mitsuba_SurfaceInteraction_dn_du = R"doc(Normal partials wrt. the UV parameterization)doc";
