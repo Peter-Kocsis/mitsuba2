@@ -214,7 +214,7 @@ struct SurfaceInteraction : Interaction<Float_, Spectrum_> {
     BSDFPtr bsdf() const { return shape->bsdf(); }
 
     // Returns the shape ids
-    Int32 shape_idx() const { return shape->get_idx(); }
+    UInt32 shape_idx() const { return shape->idx(); }
 
     // Returns the pdf of the positions
     Float pdf_position(Mask active) const { return shape->pdf_position(PositionSample3f(*this), active); }

@@ -5629,7 +5629,7 @@ static const char *__doc_mitsuba_Shape_get_children_string = R"doc()doc";
 
 static const char *__doc_mitsuba_Shape_id = R"doc(Return a string identifier)doc";
 
-static const char *__doc_mitsuba_Shape_get_idx = R"doc(Return the idx of the shape)doc";
+static const char *__doc_mitsuba_Shape_idx = R"doc(Return the idx of the shape)doc";
 
 static const char *__doc_mitsuba_Shape_interior_medium = R"doc(Return the medium that lies on the interior of this shape)doc";
 

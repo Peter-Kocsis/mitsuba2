@@ -37,7 +37,7 @@ MTS_VARIANT Scene<Float, Spectrum>::Scene(const Properties &props) {
                 m_shapegroups.push_back((ShapeGroup*)shape);
             } else {
                 m_bbox.expand(shape->bbox());
-                shape->idx = m_shapes.size();
+                shape->m_idx = m_shapes.size();
                 m_shapes.push_back(shape);
             }
         } else if (emitter) {

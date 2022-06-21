@@ -38,7 +38,6 @@ MTS_PY_EXPORT(Shape) {
             &Shape::bbox, py::const_), D(Shape, bbox, 3), "index"_a, "clip"_a)
         .def_method(Shape, surface_area)
         .def_method(Shape, id)
-        .def_method(Shape, get_idx)
         .def_method(Shape, is_mesh)
         .def_method(Shape, is_medium_transition)
         .def_method(Shape, interior_medium)
@@ -50,6 +49,7 @@ MTS_PY_EXPORT(Shape) {
                 "active"_a = true)
         .def("sensor", py::overload_cast<>(&Shape::sensor, py::const_))
         .def("bsdf", py::overload_cast<>(&Shape::bsdf, py::const_))
+        .def("idx", py::overload_cast<>(&Shape::idx, py::const_))
         .def_method(Shape, parameters_grad_enabled)
         .def_method(Shape, primitive_count)
         .def_method(Shape, effective_primitive_count);

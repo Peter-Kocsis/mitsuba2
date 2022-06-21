@@ -326,10 +326,10 @@ public:
     // =============================================================
 
     /// The shape index in the scene
-    Int32 idx;
+    uint32_t m_idx;
 
     /// The shape index in the scene
-    Int32 get_idx() const { return idx; };
+    uint32_t idx() const { return m_idx; };
 
     /// Return a string identifier
     std::string id() const override;
@@ -530,7 +530,6 @@ NAMESPACE_END(mitsuba)
 // -----------------------------------------------------------------------
 //! @{ \name Enoki support for vectorized function calls
 // -----------------------------------------------------------------------
-
 ENOKI_CALL_SUPPORT_TEMPLATE_BEGIN(mitsuba::Shape)
     ENOKI_CALL_SUPPORT_METHOD(compute_surface_interaction)
     ENOKI_CALL_SUPPORT_METHOD(eval_attribute)
@@ -538,11 +537,11 @@ ENOKI_CALL_SUPPORT_TEMPLATE_BEGIN(mitsuba::Shape)
     ENOKI_CALL_SUPPORT_METHOD(eval_attribute_3)
     ENOKI_CALL_SUPPORT_METHOD(sample_direction)
     ENOKI_CALL_SUPPORT_METHOD(id)
-    ENOKI_CALL_SUPPORT_METHOD(get_idx)
     ENOKI_CALL_SUPPORT_METHOD(pdf_position)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(emitter, m_emitter, const typename Class::Emitter *)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(sensor, m_sensor, const typename Class::Sensor *)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(bsdf, m_bsdf, const typename Class::BSDF *)
+    ENOKI_CALL_SUPPORT_GETTER(idx, m_idx)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(interior_medium, m_interior_medium,
                                    const typename Class::Medium *)
     ENOKI_CALL_SUPPORT_GETTER_TYPE(exterior_medium, m_exterior_medium,
