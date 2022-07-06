@@ -240,6 +240,60 @@ public:
         return { bs, select(active, unpolarized<Spectrum>(result) / bs.pdf, 0.f) };
     }
 
+    std::pair<BSDFSample3f, Spectrum> just_sample(const BSDFContext &ctx,
+                                            const SurfaceInteraction3f &si,
+                                            Float sample1,
+                                            const Point2f &sample2,
+                                            Mask active) const override {
+        MTS_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
+
+        bool has_specular = ctx.is_enabled(BSDFFlags::GlossyReflection, 0),
+             has_diffuse  = ctx.is_enabled(BSDFFlags::DiffuseReflection, 1);
+
+        Float cos_theta_i = Frame3f::cos_theta(si.wi);
+        active &= cos_theta_i > 0.f;
+
+        BSDFSample3f bs = zero<BSDFSample3f>();
+        Spectrum result(0.f);
+        if (unlikely((!has_specular && !has_diffuse) || none_or<false>(active)))
+            return { bs, result };
+
+        Float t_i = lerp_gather(m_external_transmittance.data(), cos_theta_i,
+                                MTS_ROUGH_TRANSMITTANCE_RES, active);
+
+        // Determine which component should be sampled
+        Float prob_specular = (1.f - t_i) * m_specular_sampling_weight,
+              prob_diffuse  = t_i * (1.f - m_specular_sampling_weight);
+
+        if (unlikely(has_specular != has_diffuse))
+            prob_specular = has_specular ? 1.f : 0.f;
+        else
+            prob_specular = prob_specular / (prob_specular + prob_diffuse);
+        prob_diffuse = 1.f - prob_specular;
+
+        Mask sample_specular = active && (sample1 < prob_specular),
+             sample_diffuse = active && !sample_specular;
+
+        bs.eta = 1.f;
+
+        if (any_or<true>(sample_specular)) {
+            MicrofacetDistribution distr(m_type, m_alpha, m_sample_visible);
+            Normal3f m = std::get<0>(distr.sample(si.wi, sample2));
+
+            masked(bs.wo, sample_specular) = reflect(si.wi, m);
+            masked(bs.sampled_component, sample_specular) = 0;
+            masked(bs.sampled_type, sample_specular) = +BSDFFlags::GlossyReflection;
+        }
+
+        if (any_or<true>(sample_diffuse)) {
+            masked(bs.wo, sample_diffuse) = warp::square_to_cosine_hemisphere(sample2);
+            masked(bs.sampled_component, sample_diffuse) = 1;
+            masked(bs.sampled_type, sample_diffuse) = +BSDFFlags::DiffuseReflection;
+        }
+
+        return { bs, 0.f };
+    }
+
     Spectrum eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
                   const Vector3f &wo, Mask active) const override {
         MTS_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);

@@ -124,6 +124,39 @@ public:
         return result;
     }
 
+    std::pair<BSDFSample3f, Spectrum> just_sample(const BSDFContext &ctx_,
+                                             const SurfaceInteraction3f &si_,
+                                             Float sample1,
+                                             const Point2f &sample2,
+                                             Mask active) const override {
+        MTS_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
+
+        using Result = std::pair<BSDFSample3f, Spectrum>;
+
+        SurfaceInteraction3f si(si_);
+        BSDFContext ctx(ctx_);
+
+        Mask front_side = Frame3f::cos_theta(si.wi) > 0.f && active,
+             back_side  = Frame3f::cos_theta(si.wi) < 0.f && active;
+
+        Result result = zero<Result>();
+        if (any_or<true>(front_side))
+            masked(result, front_side) =
+                m_brdf[0]->just_sample(ctx, si, sample1, sample2, front_side);
+
+        if (any_or<true>(back_side)) {
+            if (ctx.component != (uint32_t) -1)
+                ctx.component -= (uint32_t) m_brdf[0]->component_count();
+
+            si.wi.z() *= -1.f;
+            masked(result, back_side) =
+                m_brdf[1]->just_sample(ctx, si, sample1, sample2, back_side);
+            masked(result.first.wo.z(), back_side) *= -1.f;
+        }
+
+        return result;
+    }
+
     Spectrum eval(const BSDFContext &ctx_, const SurfaceInteraction3f &si_,
                   const Vector3f &wo_, Mask active) const override {
         MTS_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);

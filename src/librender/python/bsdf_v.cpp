@@ -65,6 +65,8 @@ MTS_PY_EXPORT(BSDF) {
         .def(py::init<const Properties&>(), "props"_a)
         .def("sample", vectorize(&BSDF::sample),
             "ctx"_a, "si"_a, "sample1"_a, "sample2"_a, "active"_a = true, D(BSDF, sample))
+        .def("just_sample", vectorize(&BSDF::just_sample),
+            "ctx"_a, "si"_a, "sample1"_a, "sample2"_a, "active"_a = true, D(BSDF, sample))
         .def("eval", vectorize(&BSDF::eval),
             "ctx"_a, "si"_a, "wo"_a, "active"_a = true, D(BSDF, eval))
         .def("pdf", vectorize(&BSDF::pdf),
@@ -94,6 +96,13 @@ MTS_PY_EXPORT(BSDF) {
             vectorize([](const BSDFPtr &ptr, const BSDFContext &ctx,
                                 const SurfaceInteraction3f &si, Float s1, const Point2f &s2,
                                 Mask active) { return ptr->sample(ctx, si, s1, s2, active); }),
+            "ptr"_a, "ctx"_a, "si"_a, "sample1"_a, "sample2"_a, "active"_a = true,
+            D(BSDF, sample));
+        bsdf.def_static(
+            "just_sample_vec",
+            vectorize([](const BSDFPtr &ptr, const BSDFContext &ctx,
+                                const SurfaceInteraction3f &si, Float s1, const Point2f &s2,
+                                Mask active) { return ptr->just_sample(ctx, si, s1, s2, active); }),
             "ptr"_a, "ctx"_a, "si"_a, "sample1"_a, "sample2"_a, "active"_a = true,
             D(BSDF, sample));
         bsdf.def_static(
