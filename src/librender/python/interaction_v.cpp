@@ -144,6 +144,8 @@ MTS_PY_EXPORT(SurfaceInteraction) {
             D(SurfaceInteraction, shape_idx))
         .def("pdf_position", &SurfaceInteraction3f::pdf_position,
             "active"_a, D(SurfaceInteraction, pdf_position))
+        .def("pdf_direction", &SurfaceInteraction3f::pdf_direction,
+            "ds"_a, "active"_a, D(SurfaceInteraction, pdf_position))
         .def("compute_uv_partials", &SurfaceInteraction3f::compute_uv_partials, "ray"_a,
             D(SurfaceInteraction, compute_uv_partials))
         .def("has_uv_partials", &SurfaceInteraction3f::has_uv_partials,

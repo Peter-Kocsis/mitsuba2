@@ -91,6 +91,7 @@ struct SurfaceInteraction : Interaction<Float_, Spectrum_> {
     MTS_IMPORT_OBJECT_TYPES()
     using Index            = typename CoreAliases::UInt32;
     using PositionSample3f = typename RenderAliases::PositionSample3f;
+    using DirectionSample3f = typename RenderAliases::DirectionSample3f;
     // Make parent fields/functions visible
     MTS_IMPORT_BASE(Interaction, t, time, wavelengths, p, is_valid)
     //! @}
@@ -218,6 +219,9 @@ struct SurfaceInteraction : Interaction<Float_, Spectrum_> {
 
     // Returns the pdf of the positions
     Float pdf_position(Mask active) const { return shape->pdf_position(PositionSample3f(*this), active); }
+
+    // Returns the pdf of the directions
+    Float pdf_direction(const DirectionSample3f &ds, Mask active) const { return shape->pdf_direction(*this, ds, active); }
 
     /// Computes texture coordinate partials
     void compute_uv_partials(const RayDifferential3f &ray) {

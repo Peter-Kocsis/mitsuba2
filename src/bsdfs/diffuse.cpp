@@ -101,6 +101,30 @@ public:
         return { bs, select(active && bs.pdf > 0.f, unpolarized<Spectrum>(value), 0.f) };
     }
 
+    std::pair<BSDFSample3f, Spectrum> just_sample(const BSDFContext &ctx,
+                                             const SurfaceInteraction3f &si,
+                                             Float sample1,
+                                             const Point2f &sample2,
+                                             Mask active) const override {
+        MTS_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
+
+        Float cos_theta_i = Frame3f::cos_theta(si.wi);
+        BSDFSample3f bs = zero<BSDFSample3f>();
+
+        active &= cos_theta_i > 0.f;
+        if (unlikely(none_or<false>(active) ||
+                     !ctx.is_enabled(BSDFFlags::DiffuseReflection)))
+            return { bs, 0.f };
+
+        bs.wo = warp::square_to_cosine_hemisphere(sample2);
+        bs.pdf = warp::square_to_cosine_hemisphere_pdf(bs.wo);
+        bs.eta = 1.f;
+        bs.sampled_type = +BSDFFlags::DiffuseReflection;
+        bs.sampled_component = 0;
+
+        return { bs, 0.f };
+    }
+
     Spectrum eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
                   const Vector3f &wo, Mask active) const override {
         MTS_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
