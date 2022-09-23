@@ -121,6 +121,30 @@ public:
         return { bs, weight & active };
     }
 
+    std::pair<BSDFSample3f, Spectrum> just_sample(const BSDFContext &ctx,
+                                             const SurfaceInteraction3f &si,
+                                             Float sample1,
+                                             const Point2f &sample2,
+                                             Mask active) const override {
+        MTS_MASKED_FUNCTION(ProfilerPhase::BSDFSample, active);
+
+        // Sample nested BSDF with perturbed shading frame
+        SurfaceInteraction3f perturbed_si(si);
+        perturbed_si.sh_frame = frame(si, active);
+        perturbed_si.wi = perturbed_si.to_local(si.wi);
+        auto [bs, weight] = m_nested_bsdf->just_sample(ctx, perturbed_si,
+                                                  sample1, sample2, active);
+        active &= any(neq(depolarize(weight), 0.f));
+
+        // Transform sampled 'wo' back to original frame and check orientation
+        Vector3f perturbed_wo = perturbed_si.to_world(bs.wo);
+        active &= Frame3f::cos_theta(bs.wo) *
+                  Frame3f::cos_theta(perturbed_wo) > 0.f;
+        bs.wo = perturbed_wo;
+
+        return { bs, weight & active };
+    }
+
     Spectrum eval(const BSDFContext &ctx, const SurfaceInteraction3f &si,
                   const Vector3f &wo, Mask active) const override {
         MTS_MASKED_FUNCTION(ProfilerPhase::BSDFEvaluate, active);
